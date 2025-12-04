@@ -2,6 +2,7 @@ import { Routes, Route, Link, useNavigate, useParams, useSearchParams, Navigate 
 import { useState, useEffect } from 'react'
 import './index.css'
 import { useAuth } from './AuthContext.jsx'
+import { API_BASE_URL } from './config.js'
 
 const TOKEN =
   'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmMTdkNjFhMjUyYmUwMzE4OGVmNDdlY2ZjN2NiMGIwMSIsIm5iZiI6MTc2NDI2NDcwMy44NTUsInN1YiI6IjY5Mjg4YWZmMDEyMWU0YmNiNTI0OTAzYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.pKVgISg9jQY2fCF490-wS-4Q_QC26rgC_6dBsuCW24Y'
@@ -338,7 +339,7 @@ function MovieDetail() {
   const fetchReviews = async () => {
     setLoadingReviews(true)
     try {
-      const response = await fetch(`http://localhost:3000/api/reviews/${id}`)
+      const response = await fetch(`${API_BASE_URL}/reviews/${id}`)
       if (response.ok) {
         const reviewData = await response.json()
         setReviews(reviewData)
@@ -397,8 +398,8 @@ function MovieDetail() {
     setSubmittingReview(true)
     try {
       const url = isEditing 
-        ? `http://localhost:3000/api/reviews/${editingReviewId}`
-        : 'http://localhost:3000/api/reviews'
+        ? `${API_BASE_URL}/reviews/${editingReviewId}`
+        : `${API_BASE_URL}/reviews`
       
       const method = isEditing ? 'PUT' : 'POST'
       
@@ -468,7 +469,7 @@ function MovieDetail() {
 
     setDeletingReviewId(userReview.id)
     try {
-      const response = await fetch(`http://localhost:3000/api/reviews/${userReview.id}`, {
+      const response = await fetch(`${API_BASE_URL}/reviews/${userReview.id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -900,14 +901,14 @@ function UserProfile({ userId }) {
     async function fetchUserData() {
       try {
         // Fetch user info
-        const userResponse = await fetch(`http://localhost:3000/api/users/${userId}`)
+        const userResponse = await fetch(`${API_BASE_URL}/users/${userId}`)
         if (userResponse.ok) {
           const userData = await userResponse.json()
           setUserInfo(userData)
         }
 
         // Fetch user reviews
-        const reviewsResponse = await fetch(`http://localhost:3000/api/reviews/user/${userId}`)
+        const reviewsResponse = await fetch(`${API_BASE_URL}/reviews/user/${userId}`)
         if (reviewsResponse.ok) {
           const reviewData = await reviewsResponse.json()
           setReviews(reviewData)
@@ -1062,7 +1063,7 @@ function Profile() {
 
     async function fetchUserReviews() {
       try {
-        const response = await fetch(`http://localhost:3000/api/reviews/user/${user.id}`)
+        const response = await fetch(`${API_BASE_URL}/reviews/user/${user.id}`)
         if (response.ok) {
           const reviewData = await response.json()
           setReviews(reviewData)
